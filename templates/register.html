@@ -1,0 +1,18 @@
+{% extends "base.html" %} 
+{% block title %}Register{% endblock %} 
+{# Load the tag library #} {% load bootstrap5 %} {# Load CSS and JavaScript #}
+{% bootstrap_css %} {% bootstrap_javascript %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+  <head> </head>
+  <body>
+    <h1>Register a User</h1>
+
+    <form method="post">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+  </body>
+</html>
+{% endblock %}
