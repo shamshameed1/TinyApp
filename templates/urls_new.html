@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}My URLs New{% endblock %} 
+{% block content %}
+    <h3>Create TinyURL</h3>
+    <form class="form-inline" method="POST">
+        {% csrf_token %}{{ form.as_p}}
+            <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+{% endblock %}

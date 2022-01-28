@@ -12,9 +12,10 @@ class Users (models.Model):
    email_address = models.CharField(max_length=30)
    password = models.CharField(max_length=15)
 
+
 class Url(models.Model):
    short_url = models.URLField(max_length=10)
    long_url = models.URLField(max_length=200) 
-   user_id = models.ForeignKey(Users, on_delete=models.CASCADE) 
+   user = models.ForeignKey(User, on_delete=models.CASCADE) 
    date_created = models.DateField()
 
