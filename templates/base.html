@@ -35,6 +35,9 @@
               {% endif %}
               <li class="nav-item {{ 'nav-link active' }}"> <a style ='color: white; text-decoration: none;' href="{% url 'urls' %}">My URLs</a></li>
               <li class="nav-item {{ 'nav-link active' }}"> <a style ='color: white; text-decoration: none;' href="{% url 'urls_new' %}">Create New URL</a></li>
+              {% if perms.tinyapp.view_user %}
+                <li class="nav-item {{ 'nav-link active' }}"> <a style ='color: white; text-decoration: none;' href="{% url 'users_list' %}">Users List</a></li>
+              {% endif %}
             </ul>
           </div>
           {% if user.is_authenticated %}
@@ -42,7 +45,9 @@
               <form method="get" action="/logout/">{% csrf_token %}
                 <div><button class="btn btn-danger" type="submit">Log Out</button></div>
               </form>
+              
             {% endif %}
+            
             
             {% if user.is_authenticated == False %}
               

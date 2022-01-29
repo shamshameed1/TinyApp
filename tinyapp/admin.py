@@ -7,3 +7,5 @@ admin.site.register(User, UserAdmin)
 admin.site.register(Url)
 
 # Register your models here.
+
+admin.site.site_header = 'TinyApp Administration'
