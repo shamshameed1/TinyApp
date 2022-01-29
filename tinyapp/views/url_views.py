@@ -4,9 +4,12 @@ from tinyapp.models import User, Url
 import string, random
 from django.forms import TextInput, ModelForm
 from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class UrlListView(ListView):
+class UrlListView(LoginRequiredMixin, ListView):
+    login_url='/login/'
+
     model = Url
     context_object_name = 'urls'
     
@@ -75,7 +78,8 @@ class UrlUpdateView(UpdateView):
         
         return super().get(request, *args, **kwargs)
 
-class UrlCreateView(CreateView):
+class UrlCreateView(LoginRequiredMixin, CreateView):
+    login_url='/login/'
     form_class = UrlModelForm
     success_url ='/urls/'
     template_name = 'urls_new.html'
