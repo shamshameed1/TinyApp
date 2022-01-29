@@ -13,8 +13,6 @@ class UrlListView(LoginRequiredMixin, ListView):
     model = Url
     context_object_name = 'urls'
     
-    #queryset = [{'short_url': 'b2xVn2', 'long_url': 'https://www.google.com'}]
-    #queryset = model.objects.all()
     template_name = "urls_index.html"
 
     def get_context_data(self, **kwargs):
@@ -45,7 +43,19 @@ class UrlDetailView(DetailView):
 class UrlRedirectView(View):
     def get(self, request, short_url):
         long = Url.objects.values_list('long_url', flat=True).get(short_url = short_url)
+        key = short_url
+
+        if key in self.request.session.keys():
+            self.request.session[key] += 1
+        else:
+            self.request.session[key] = 1
+        print(self.request.session[key])
         return HttpResponseRedirect(long)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['username'] = self.request.session.get('username')
+        return context
 
 class UrlDeleteView(DeleteView):
     model = Url
@@ -53,7 +63,7 @@ class UrlDeleteView(DeleteView):
 
 class UrlUpdateView(UpdateView):
     model = Url
-    form_class = UrlModelForm
+   #form_class = UrlModelForm
     fields = ['long_url']
     success_url = '/urls'
     template_name = 'url_detail.html'
@@ -61,6 +71,15 @@ class UrlUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['username'] = self.request.session.get('username') 
+                 
+        cookie_id = str(context['url']) 
+        
+        if self.request.session.get(cookie_id) == None:
+            context['total_visits'] = 0
+        else:
+            context['total_visits'] = self.request.session.get(cookie_id)
+        
+        return context 
         
         return context
     def get(self, request, *args, **kwargs):

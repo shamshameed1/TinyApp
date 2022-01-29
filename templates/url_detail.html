@@ -7,6 +7,7 @@
             <div class="card-body">
             <h5 class="card-title">TinyURL for: {{ url.longURL }}</h5>
             <p class="card-text">Short URL: <a href="{% url 'urls_redirect' url.short_url %}">{{ url.short_url }}</a></p>
+            <p class="card-text">Visited: {{total_visits}} times!</p>
             </div>
             <div class="card-footer text-muted"></div>
             <form method="POST">{% csrf_token %} {{ form.as_p }}
