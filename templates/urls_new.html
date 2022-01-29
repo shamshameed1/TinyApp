@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 {% block title %}My URLs New{% endblock %} 
 {% block content %}
-    <h3>Create TinyURL</h3>
-    <form class="form-inline" method="POST">
-        {% csrf_token %}{{ form.as_p}}
-            <button type="submit" class="btn btn-primary">Create</button>
-    </form>
+    {% if user.is_authenticated %}
+        <h3>Create TinyURL</h3>
+        <form class="form-inline" method="POST">
+            {% csrf_token %}{{ form.as_p}}
+                <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    {%else%}
+        <h1>Thou shalt not pass! Please <a href="{% url 'user_login' %}">Login</a> or <a href="{% url 'register' %}">Register</a></h1>
+    {% endif %}
 {% endblock %}

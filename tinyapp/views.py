@@ -1,60 +1,124 @@
-from datetime import date
-from django.shortcuts import render
-from django.views.generic import CreateView, ListView, DetailView, View
-from .models import User, Url
-from .forms import UserRegisterForm
-import string
-import random
-from django.forms import TextInput, ModelForm
-from django.http import HttpResponseRedirect
+# from dataclasses import fields
+# from datetime import date
+# from django.shortcuts import render
+# from django.views.generic import CreateView, ListView, DetailView, View, DeleteView, UpdateView
+# from django.contrib.auth.views import LoginView,LogoutView
+# from .models import User, Url
+# from .forms import UserRegisterForm
+# import string
+# import random
+# from django.forms import TextInput, ModelForm
+# from django.http import HttpResponseRedirect, HttpResponseForbidden
 
 
-# Create your views here.
-from django.views.generic import CreateView
-from .models import User
-from .forms import UserRegisterForm
 
-class UserRegistrationView(CreateView):
-    form_class = UserRegisterForm
-    success_url = '/register'
-    template_name = 'register.html'
 
-class UrlListView(ListView):
-    model = Url
-    context_object_name = 'urls'
+# from django.views.generic import CreateView
+# from .models import User
+# from .forms import UserRegisterForm
+
+# class UserRegistrationView(CreateView):
+#     form_class = UserRegisterForm
+#     success_url = '/login/'
+#     template_name = 'register.html'
+
+#     def form_valid(self, form):
+#         self.request.session['username'] = form.cleaned_data['username']
+#         return super().form_valid(form)
+
+# class UrlListView(ListView):
+#     model = Url
+#     context_object_name = 'urls'
     
-    queryset = [{'short_url': 'b2xVn2', 'long_url': 'https://www.google.com'}]
-    template_name = "urls_index.html"
+    
+#     template_name = "urls_index.html"
 
-class UrlModelForm(ModelForm):
-    class Meta:
-        model = Url
-        fields = ['long_url']
-        widgets = {
-            'long_url': TextInput(attrs={'placeholder': 'http://'})
-        }
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['username'] = self.request.session.get('username')
+        
+#         return context
+#     def get_queryset(self):
+        
+#         current_user = self.request.user.id
+        
+#         if current_user == None:
+#             return None
+        
+#         return Url.objects.filter(user_id=current_user) 
 
-class UrlDetailView(DetailView):
-    model = Url
-    template_name = 'url_detail.html'
+# class UrlModelForm(ModelForm):
+#     class Meta:
+#         model = Url
+#         fields = ['long_url']
+#         widgets = {
+#             'long_url': TextInput(attrs={'placeholder': 'http://'})
+#         }
 
-class UrlRedirectView(View):
-    def get(self, request, short_url):
-        long = Url.objects.values_list('long_url', flat=True).get(short_url = short_url)
-        return HttpResponseRedirect(long)
+# class UrlDetailView(DetailView):
+#     model = Url
+#     template_name = 'url_detail.html'
 
-class UrlCreateView(CreateView):
-    form_class = UrlModelForm
-    success_url ='/urls/'
-    template_name = 'urls_new.html'
+# class UrlRedirectView(View):
+#     def get(self, request, short_url):
+#         long = Url.objects.values_list('long_url', flat=True).get(short_url = short_url)
+#         return HttpResponseRedirect(long)
 
-    def shortURLCreator(self):
-        x = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
-        return x 
+# class UrlDeleteView(DeleteView):
+#     model = Url
+#     success_url = '/urls'
 
-    def form_valid(self, form):
-        user = User.objects.first()
-        form.instance.user = user
-        form.instance.short_url = self.shortURLCreator()
-        form.instance.date_created = date.today()
-        return super().form_valid(form)
+# class UrlUpdateView(UpdateView):
+#     model = Url
+#     form_class = UrlModelForm
+#     fields = ['long_url']
+#     success_url = '/urls'
+#     template_name = 'url_detail.html'
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['username'] = self.request.session.get('username') 
+        
+#         return context
+#     def get(self, request, *args, **kwargs):
+#         self.object = self.get_object()
+        
+#         logged_in_user = self.request.session.get('username')
+        
+#         logged_in_user_id = None
+        
+#         if logged_in_user:
+#             logged_in_user_id = User.objects.filter(username=logged_in_user)[0].id
+        
+#         if(self.object.user_id != logged_in_user_id):
+#             return HttpResponseForbidden()
+        
+#         return super().get(request, *args, **kwargs)
+    
+# class UrlCreateView(CreateView):
+#     form_class = UrlModelForm
+#     success_url ='/urls/'
+#     template_name = 'urls_new.html'
+
+#     def shortURLCreator(self):
+#         x = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
+#         return x 
+
+#     def form_valid(self, form):
+#         current_user_id = self.request.user.id
+#         user = User.objects.filter(pk = current_user_id).first()
+#         #user = User.objects.first()
+#         form.instance.user = user
+#         form.instance.short_url = self.shortURLCreator()
+#         form.instance.date_created = date.today()
+#         return super().form_valid(form)
+
+# class UserLoginView(LoginView):
+    
+#     success_url = '/urls'
+    
+#     def form_valid(self, form):
+#         self.request.session['username'] = form.cleaned_data['username']
+#         return super().form_valid(form)
+
+    

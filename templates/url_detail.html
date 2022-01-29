@@ -1,13 +1,20 @@
 {% extends "base.html" %}
 {% block title %}URL Detail{% endblock %} 
 {% block content %}
-<div class="card text-center">
-    <div class="card-header"></div>
-    <div class="card-body">
-      <h5 class="card-title">TinyURL for: {{ url.longURL }}</h5>
-      <p class="card-text">Short URL: <a href="{% url 'urls_redirect' url.short_url %}">{{ url.short_url }}</a></p>
-    </div>
-    <div class="card-footer text-muted"></div>
-  </div>
+    {% if user.is_authenticated %}
+        <div class="card text-center">
+            <div class="card-header"></div>
+            <div class="card-body">
+            <h5 class="card-title">TinyURL for: {{ url.longURL }}</h5>
+            <p class="card-text">Short URL: <a href="{% url 'urls_redirect' url.short_url %}">{{ url.short_url }}</a></p>
+            </div>
+            <div class="card-footer text-muted"></div>
+            <form method="POST">{% csrf_token %} {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Edit</button>
+            </form>
+        </div>
+    {%else%}
+        <h1>Thou shalt not pass! Please <a href="{% url 'user_login' %}">Login</a> or <a href="{% url 'register' %}">Register</a></h1>
+    {% endif %}
 
 {% endblock %}
