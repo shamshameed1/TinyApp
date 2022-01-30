@@ -18,6 +18,7 @@ class UserLoginView(LoginView):
     
     def form_valid(self, form):
         self.request.session['username'] = form.cleaned_data['username']
+        LoginView.redirect_authenticated_user
         return super().form_valid(form)
 
     

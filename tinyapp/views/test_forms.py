@@ -7,5 +7,6 @@ class TestUrlModelForm(TestCase):
         form = UrlModelForm();
         self.assertIn('long_url', form.fields)
         self.assertIn('placeholder="http://"', form.as_p())
+        self.assertIn('class="form-control bg-info"', form.as_p())
 
-        self.fail(form.as_p())
+        

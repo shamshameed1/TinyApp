@@ -16,7 +16,7 @@
             <tbody>
             {% for url in urls %}
                 <tr>
-                <td>{{ url.short_url }}</td>
+                <td>{{ url.short_url }}</td>    
                 <td>{{ url.long_url }}</td>
                 <td>
                     
@@ -26,7 +26,7 @@
                 </td>
                 <td>
                     
-                    <form method="POST" action="{% url 'urls_edit' url.id %}">{% csrf_token %}
+                    <form  method="POST" action = "{% url 'urls_edit' url.id %}">{% csrf_token %}
                         <button class="btn btn-outline-primary" type="submit">Edit</button>
                     </form>
                 </td>

@@ -52,7 +52,10 @@ class ViewTest(TestCase):
         
     def test_url_list_view_logged_in(self):
         c = Client()
-            
+        login_response = c.post('/login/',{'username':'KJ', 'password':'!P4s5w0*d'})   
         login_check = c.get('/login/')
         self.assertEqual(login_check.status_code, 200)
+        self.assertEqual(login_response.url, '/urls')
+        self.assertEqual(login_response.status_code, 302)
+
                   
